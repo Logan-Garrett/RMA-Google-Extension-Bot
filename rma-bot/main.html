@@ -1,6 +1,159 @@
 <html>
-  <body>
-    <h1>RMA Extension</h1>
-    <script src="popup.js"></script>
-  </body>
+    <body class="popup-body">
+        <h1>RMA Extension</h1>
+
+        <hr />
+        <div class="status-container">
+            <h2>Bot Status:</h2>
+            <label id="extensionStatusLabel">Off</label>
+        </div>
+
+        <button class="button" id="enableExtension">Start</button>
+        <button class="button" id="disableExtension">Stop</button>
+        <br />
+
+        <br />
+        <hr />
+        <div class="status-container">
+            <h2>Refresh Time:</h2>
+            <label id="refreshTimeLabel">5</label>
+        </div>
+        <input type="text" id="refreshTimeInput" placeholder="Refresh Time" />
+        <button class="button" id="refreshTimeButton" type="submit">
+            Update
+        </button>
+        <br />
+
+        <br />
+        <hr />
+        <h2>Client List</h2>
+        <input
+            type="text"
+            id="clientNameInput"
+            placeholder="Enter Client Name"
+        />
+        <button class="button" id="clientNameButton" type="submit">Add</button>
+        <button class="button" id="clearClientButton" type="submit">
+            Delete
+        </button>
+        <br />
+
+        <ul id="clientListContainer"></ul>
+
+        <script src="popup.js"></script>
+    </body>
 </html>
+
+<style>
+    .popup-body {
+        /* Extension Max Size for Chrom */
+        max-width: 800px;
+        width: 600px;
+        max-height: 600px;
+        height: 400px;
+
+        /* */
+        padding: 10px;
+        border-radius: 5px;
+        border-style: solid;
+        border-color: black;
+    }
+
+    .button {
+        display: inline-block;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        /* margin: 10px; */
+        cursor: pointer;
+    }
+
+    #enableExtension {
+        background-color: #04aa6d;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    #enableExtension:hover {
+        background-color: #0fad87;
+    }
+
+    #disableExtension {
+        background-color: #f44336;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    #disableExtension:hover {
+        background-color: #d6301a;
+    }
+
+    #clientNameButton {
+        background-color: #7cb9e8;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    #clientNameButton:hover {
+        background-color: #5dade2;
+    }
+
+    #clearClientButton {
+        background-color: #f44336;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    #clearClientButton:hover {
+        background-color: #d6301a;
+    }
+
+    #clientNameInput {
+        padding-left: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        width: 200px;
+        font-size: 20px;
+        text-align: left;
+    }
+
+    #refreshTimeButton {
+        background-color: #7cb9e8;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    #refreshTimeButton:hover {
+        background-color: #5dade2;
+    }
+
+    #refreshTimeInput {
+        padding-left: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        width: 200px;
+        font-size: 20px;
+        text-align: left;
+    }
+
+    #extensionStatusLabel {
+        font-size: 20px;
+    }
+
+    #refreshTimeLabel {
+        font-size: 20px;
+    }
+
+    .status-container {
+        display: flex;
+        align-items: center;
+        padding-bottom: 0px;
+    }
+
+    .status-container h2 {
+        margin-right: 10px;
+    }
+</style>
