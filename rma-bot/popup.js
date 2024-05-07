@@ -4,6 +4,12 @@ let refreshTimesTime = 5;
 let intervalId;
 let isBotSupposedToBeOn = false;
 
+// Get Needed Codes
+function extractBillingCodes() {
+  // Nothing
+  console.log("Hello Cruel World");
+}
+
 // Update Status
 function updateStatusLabel(status) {
   var label = document.getElementById("extensionStatusLabel");
@@ -23,14 +29,24 @@ function updateRefreshTime(time) {
 
 // Refresh Page
 function refreshPage() {
+  // DO WORK Function?
+  //var codes =
+  extractBillingCodes();
+  // console.log(codes);
+
+  // Refresh after work
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.reload(tabs[0].id);
   });
 }
 
+/*
+Logic will need to be added to prevent refresh when a client is found. Possibly change to cancel refresh and restart after.
+*/
 // Start Bot
 function startBot(refreshTimesTime) {
   if (isBotSupposedToBeOn) {
+    // Wait
     intervalId = setInterval(refreshPage, refreshTimesTime * 1000);
   }
 }
@@ -93,7 +109,7 @@ document
     deleteClient(clientName);
   });
 
-//Refresh Client List
+// Refresh Client List
 document.addEventListener("DOMContentLoaded", updateClientList);
 
 // Update Client List Handler
