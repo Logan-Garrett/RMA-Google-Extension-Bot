@@ -86,7 +86,7 @@ document
 
 // Clear Client List
 document
-  .getElementById("clearClientButton")
+  .getElementById("deleteClientButton")
   .addEventListener("click", function () {
     var clientName = document.getElementById("clientNameInput").value;
     console.log("Client name submitted: " + clientName);
