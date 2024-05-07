@@ -69,21 +69,15 @@ document
 document
   .getElementById("clientNameButton")
   .addEventListener("click", function () {
-    // Your code to handle client name submission goes here
     var clientName = document.getElementById("clientNameInput").value;
     console.log("Client name submitted: " + clientName);
     addToClientList(clientName);
-    // Optionally, you can display the submitted client name
-    /* document.getElementById("displayClientList").innerText =
-      "Submitted Client Name: " + clientName;
-    */
   });
 
 // Refresh Time Button
 document
   .getElementById("refreshTimeButton")
   .addEventListener("click", function () {
-    // Update Refresh Time
     var refreshTime = document.getElementById("refreshTimeInput").value;
     updateRefreshTimeLabel(refreshTime);
     updateRefreshTime(refreshTime);
@@ -94,9 +88,12 @@ document
 document
   .getElementById("clearClientButton")
   .addEventListener("click", function () {
-    clearClientList();
+    var clientName = document.getElementById("clientNameInput").value;
+    console.log("Client name submitted: " + clientName);
+    deleteClient(clientName);
   });
 
+//Refresh Client List
 document.addEventListener("DOMContentLoaded", updateClientList);
 
 // Update Client List Handler
@@ -104,7 +101,7 @@ function updateClientList() {
   chrome.storage.local.get({ clientList: [] }, function (result) {
     var clientList = result.clientList;
     var listContainer = document.getElementById("clientListContainer");
-    listContainer.innerHTML = ""; // Clear the previous list content
+    listContainer.innerHTML = "";
     clientList.forEach(function (clientName) {
       var listItem = document.createElement("li");
       listItem.textContent = clientName;
@@ -125,15 +122,16 @@ function addToClientList(clientName) {
   });
 }
 
-// Clear Client List Handler
-function clearClientList() {
+// Delete Client List Handler
+function deleteClient(clientNameToDelete) {
   chrome.storage.local.get({ clientList: [] }, function (result) {
     var clientList = result.clientList;
-    if (clientList.length > 0) {
-      clientList.pop(); // Remove the last item from the array
+    var index = clientList.indexOf(clientNameToDelete);
+    if (index !== -1) {
+      clientList.splice(index, 1);
       chrome.storage.local.set({ clientList: clientList }, function () {
-        console.log("Last client removed from the list.");
-        updateClientList(); // Update the displayed client list
+        console.log("Client deleted from the list: " + clientNameToDelete);
+        updateClientList();
       });
     }
   });
