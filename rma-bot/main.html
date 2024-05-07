@@ -34,11 +34,15 @@
         />
         <button class="button" id="clientNameButton" type="submit">Add</button>
         <button class="button" id="deleteClientButton" type="submit">
-            Remove
+            Delete
         </button>
         <br />
 
-        <ul id="clientListContainer"></ul>
+        <div class="client-list-container">
+            <table id="clientListTable">
+                <tbody id="clientListContainer"></tbody>
+            </table>
+        </div>
 
         <script src="popup.js"></script>
     </body>
@@ -50,13 +54,13 @@
         max-width: 800px;
         width: 600px;
         max-height: 600px;
-        height: 500px;
+        height: 550px;
 
         /* */
         padding: 10px;
         border-radius: 5px;
         border-style: solid;
-        border-color: black;
+        border-color: whitesmoke;
     }
 
     .button {
@@ -68,43 +72,43 @@
     }
 
     #enableExtension {
-        background-color: #04aa6d;
+        background-color: #4fd95a;
         border-radius: 5px;
-        font-size: 20px;
+        font-size: 24px;
     }
 
     #enableExtension:hover {
-        background-color: #0fad87;
+        background-color: #89ec91;
     }
 
     #disableExtension {
-        background-color: #f44336;
+        background-color: #e44f4f;
         border-radius: 5px;
-        font-size: 20px;
+        font-size: 24px;
     }
 
     #disableExtension:hover {
-        background-color: #d6301a;
+        background-color: #ef7a7a;
     }
 
     #clientNameButton {
-        background-color: #7cb9e8;
+        background-color: #92cace;
         border-radius: 5px;
         font-size: 20px;
     }
 
     #clientNameButton:hover {
-        background-color: #5dade2;
+        background-color: #bfe0e2;
     }
 
     #deleteClientButton {
-        background-color: #f44336;
+        background-color: #e64d4d;
         border-radius: 5px;
         font-size: 20px;
     }
 
     #deleteClientButton:hover {
-        background-color: #d6301a;
+        background-color: #f17878;
     }
 
     #clientNameInput {
@@ -119,13 +123,13 @@
     }
 
     #refreshTimeButton {
-        background-color: #7cb9e8;
+        background-color: #c8c8c8;
         border-radius: 5px;
         font-size: 20px;
     }
 
     #refreshTimeButton:hover {
-        background-color: #5dade2;
+        background-color: #e3e3e3;
     }
 
     #refreshTimeInput {
@@ -145,6 +149,29 @@
 
     #refreshTimeLabel {
         font-size: 20px;
+    }
+
+    .client-list-container {
+        max-height: 100px;
+        overflow-y: auto;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin: 5px;
+        padding: 5px;
+        background-color: gray;
+    }
+
+    #clientListTable {
+        list-style-type: none;
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .client-list-container li {
+        background-color: whitesmoke;
+        border: 2px solid black;
+        margin-bottom: -2;
+        padding: 5px;
     }
 
     .status-container {
