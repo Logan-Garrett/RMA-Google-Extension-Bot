@@ -6,7 +6,12 @@ let isBotSupposedToBeOn = false;
 
 // Get Needed Codes
 function extractBillingCodes() {
-  // Nothing
+  chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+    if (changeInfo.status === "complete") {
+      chrome.tabs.sendMessage(tabId, { action: "callFunction" });
+    }
+  });
+
   console.log("Hello Cruel World");
 }
 
