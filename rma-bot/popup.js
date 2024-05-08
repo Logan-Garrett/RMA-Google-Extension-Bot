@@ -5,12 +5,14 @@ let intervalId;
 let isBotSupposedToBeOn = false;
 
 // Get Needed Codes
-function extractBillingCodes() {
-  chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    if (changeInfo.status === "complete") {
-      chrome.tabs.sendMessage(tabId, { action: "callFunction" });
-    }
-  });
+function doWork() {
+  chrome.tabs.onUpdated.addListener(
+    function (tabId, changeInfo, tab, response) {
+      if (changeInfo.status === "complete") {
+        chrome.tabs.sendMessage(tabId, { action: "callFunction" });
+      }
+    },
+  );
 
   console.log("Hello Cruel World");
 }
@@ -36,10 +38,11 @@ function updateRefreshTime(time) {
 function refreshPage() {
   // DO WORK Function?
   //var codes =
-  extractBillingCodes();
+  doWork();
   // console.log(codes);
 
   // Refresh after work
+  // Check other stuff before refresh almost as if waiting
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.reload(tabs[0].id);
   });
