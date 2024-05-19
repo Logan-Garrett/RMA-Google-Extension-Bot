@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(
     if (message.action === "gatherList") {
       // Add Refresh here???
       gatherList();
-      messageToStart();
+      messageToStart(); // NEED to adjust for BOOL intake based on gatherlist
     } else if (message.action === "startTheStopProcess") {
       messageToStop();
     }
@@ -54,6 +54,7 @@ function messageToStart() {
   chrome.runtime.sendMessage({
     action: "startBot",
     url: window.location.href,
+    newevents: true,
   });
 }
 

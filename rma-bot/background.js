@@ -6,17 +6,23 @@ let refreshIntervalId;
 let callCount = 0;
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  // should just call once but keeps calling it seems.
   if (message.action === "startBot" && callCount < 1) {
     botIsActive = true;
     currentPage = message.url;
     console.log("Started Bot. Page is: ", currentPage);
-    startRefreshingPage(5000);
+    if (message.newevents) {
+      // If new clients should cause this.
+      performActions(currentPage, botIsActive);
+    } else {
+      // no new clients does this.
+      startRefreshingPage(5000);
+    }
     callCount += 1;
     // performActions(currentPage, botIsActive, message.arguments);
   }
   if (message.action === "stopBot") {
     botIsActive = false;
+    callCount = 0;
     console.log("Stopped Bot. Page is: ", currentPage);
     stopRefreshingPage();
   }
@@ -24,11 +30,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 // Page run around going poop.
 // Extension also going poof
-async function performActions(url, botIsActive, refreshTimesTime) {
+async function performActions(url, botIsActive) {
   console.log("Performing actions on page:", url);
   while (botIsActive) {
     // Should be info page
-    if (url.includes("google.com")) {
+    // giving dummy page
+    if (
+      url.includes(
+        "file:///Users/logangarrett03/Desktop/git/RMABot/IQVNoveMod-AvailableEngagements.html",
+      )
+    ) {
       // will change url to correct one
       await sleep(3000); // Sleep for 2 seconds
       secondPageAction("https://example.com", botIsActive);
@@ -38,7 +49,10 @@ async function performActions(url, botIsActive, refreshTimesTime) {
     } else if (url.includes("cars.com")) {
       await sleep(3000); // Sleep for 2 seconds
       // restart
-      restartPerformActions("google.com", botIsActive);
+      restartPerformActions(
+        "file:///Users/logangarrett03/Desktop/git/RMABot/IQVNoveMod-AvailableEngagements.html",
+        false, // change for now
+      );
       // restartPerformActions("google.com", botIsActive);
     } else {
       console.log("Should not reach here.");
