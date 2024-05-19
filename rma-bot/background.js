@@ -1,25 +1,40 @@
 let currentPage = null;
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.action === "pageAction") {
-    if (message.type === "pageChange") {
-      currentPage = message.url;
-      performActions(message.url); // pass page
-    }
+  if (message.action === "pageOpened") {
+    currentPage = message.url;
+    console.log("Page opened:", currentPage);
+    performActions(currentPage);
   }
 });
 
-// Look into what page and split the action and basically re-loop.
-// Seems that first round of cuntions pointless and the others just loop through.
 function performActions(url) {
   console.log("Performing actions on page:", url);
 
   if (url.includes("google.com")) {
-    openNewTab("https://example.com");
+    secondPageAction("https://example.com");
+  } else if (url.includes("https://example.com")) {
+    thirdPageAction("amazon.com");
   }
 }
 
-// Example Function
-function openNewTab(url) {
-  chrome.tabs.create({ url: url });
+// Second Page Action / View Engagment
+function secondPageAction(url) {
+  chrome.tabs.update({ url: url }, function (tab) {
+    console.log("New tab opened with URL:", url);
+    // Open page??
+    chrome.runtime.sendMessage({
+      action: "pageOpened",
+      url: url,
+    });
+  });
 }
+
+// Third Page Action / Sign Agreemant
+function thirdPageAction(url) {
+  chrome.tabs.update({ url: url }, function (tab) {
+    console.log("New tab opened with URL:", url);
+  });
+}
+
+// Restart Process????

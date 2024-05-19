@@ -1,7 +1,24 @@
+// Start Process from Popup
 chrome.runtime.onMessage.addListener(
   function (message, sender, sendResponse, response) {
     if (message.action === "callFunction") {
       myFunction();
+    }
+  },
+);
+
+// Next Process starting loop again
+chrome.runtime.onMessage.addListener(
+  function (message, sender, sendResponse, response) {
+    if (message.action === "pageOpened") {
+      link.href = "https://www.example.com";
+
+      link.click();
+
+      chrome.runtime.sendMessage({
+        action: "pageOpened",
+        url: link.href,
+      });
     }
   },
 );
@@ -50,7 +67,7 @@ function myFunction() {
 
         chrome.runtime.sendMessage({
           action: "pageOpened",
-          url: window.location.href,
+          url: link.href,
         });
       });
     }
