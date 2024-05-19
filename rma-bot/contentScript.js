@@ -1,29 +1,20 @@
-// Start Process from Popup
 chrome.runtime.onMessage.addListener(
   function (message, sender, sendResponse, response) {
-    if (message.action === "callFunction") {
-      myFunction();
+    if (message.action === "gatherList") {
+      // Add Refresh here???
+      gatherList();
+      messageToStart();
+    } else if (message.action === "startTheStopProcess") {
+      messageToStop();
     }
   },
 );
 
-// Next Process starting loop again
-chrome.runtime.onMessage.addListener(
-  function (message, sender, sendResponse, response) {
-    if (message.action === "pageOpened") {
-      link.href = "https://www.example.com";
-
-      link.click();
-
-      chrome.runtime.sendMessage({
-        action: "pageOpened",
-        url: link.href,
-      });
-    }
-  },
-);
-
-function myFunction() {
+/*
+ * ADJUST list to not include numbers
+ */
+function gatherList() {
+  console.log("Gather List inside content script.");
   chrome.storage.local.get("clientList", function (data, response) {
     var clientList = data.clientList;
     console.log("Client List:", clientList);
@@ -43,9 +34,9 @@ function myFunction() {
 
         const isInClientList = clientList.includes(billingCode);
 
-        console.log(
-          `Billing Code: ${billingCode}, isInClientList: ${isInClientList}`,
-        );
+        //console.log(
+        //  `Billing Code: ${billingCode}, isInClientList: ${isInClientList}`,
+        //);
 
         if (isInClientList) {
           dataList.push({ billingCode, hyperlink });
@@ -54,22 +45,22 @@ function myFunction() {
 
       console.log("Data List");
       console.log(dataList);
-
-      dataList.forEach((item) => {
-        // var link = document.createElement("a");
-        // link.href = item.hyperlink;
-        // link.click();
-        var link = document.createElement("a");
-        link.href = "https://www.google.com";
-
-        // Simulate a click event
-        link.click();
-
-        chrome.runtime.sendMessage({
-          action: "pageOpened",
-          url: link.href,
-        });
-      });
     }
+  });
+}
+
+function messageToStart() {
+  console.log("send message from content script to start.");
+  chrome.runtime.sendMessage({
+    action: "startBot",
+    url: window.location.href,
+  });
+}
+
+function messageToStop() {
+  console.log("send message from content script to stop.");
+  chrome.runtime.sendMessage({
+    action: "stopBot",
+    url: window.location.href,
   });
 }

@@ -4,17 +4,28 @@ let refreshTimesTime = 5;
 let intervalId;
 let isBotSupposedToBeOn = false;
 
-// Get Needed Codes
-function doWork() {
+function doWork(refreshTimesTime) {
+  console.log("Doing Work.");
+  // Needed to start process
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.reload(tabs[0].id);
+  });
   chrome.tabs.onUpdated.addListener(
     function (tabId, changeInfo, tab, response) {
-      if (changeInfo.status === "complete") {
-        chrome.tabs.sendMessage(tabId, { action: "callFunction" });
+      if (changeInfo.status === "complete" && isBotSupposedToBeOn == true) {
+        // contentScript.js
+        chrome.tabs.sendMessage(tabId, {
+          action: "gatherList",
+          arguments: refreshTimesTime,
+        });
+        // Background.js
+        chrome.tabs.sendMessage(tabId, {
+          action: "startBot",
+          arguments: refreshTimesTime,
+        });
       }
     },
   );
-
-  console.log("Hello Cruel World");
 }
 
 // Update Status
@@ -34,28 +45,12 @@ function updateRefreshTime(time) {
   refreshTimesTime = time;
 }
 
-// Refresh Page
-function refreshPage() {
-  // DO WORK Function?
-  //var codes =
-  doWork();
-  // console.log(codes);
-
-  // Refresh after work
-  // Check other stuff before refresh almost as if waiting
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    chrome.tabs.reload(tabs[0].id);
-  });
-}
-
-/*
-Logic will need to be added to prevent refresh when a client is found. Possibly change to cancel refresh and restart after.
-*/
 // Start Bot
 function startBot(refreshTimesTime) {
+  console.log("Bot has Entered the Room.");
   if (isBotSupposedToBeOn) {
-    // Wait
-    intervalId = setInterval(refreshPage, refreshTimesTime * 1000);
+    doWork(refreshTimesTime);
+    // intervalId = setInterval(refreshPage, refreshTimesTime * 1000);
   }
 }
 
@@ -67,6 +62,17 @@ function restartBot(refreshTimesTime) {
 // Stop Bot
 function stopBot() {
   clearInterval(intervalId);
+  // Needed to stop
+  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.reload(tabs[0].id);
+  });
+  chrome.tabs.onUpdated.addListener(
+    function (tabId, changeInfo, tab, response) {
+      if (changeInfo.status === "complete") {
+        chrome.tabs.sendMessage(tabId, { action: "startTheStopProcess" });
+      }
+    },
+  );
 }
 
 // Enable Extension button action
